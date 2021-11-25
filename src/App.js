@@ -15,6 +15,8 @@ function App() {
   const data = useSelector((state)=> state);
 
   const [marks , setMark] = useState(0);
+  const Result = `Your Marks is ${marks}`;
+  const none = '';
   // const [data, setdata]  = useState ([
   //   {
   //     question : "Q1: Which of the following is used to create Web Pages ?",
@@ -68,24 +70,17 @@ function App() {
   //   }
   // ]);
   const [dataInd, setDataInd] = useState(0);
+  const [showResult, setShowResult] = useState(false);
   const nextQues = () =>{
 
-    if (data[dataInd].question.length == -1) {
-      data[dataInd].question = "Your Score is "
+    if (data.length - 1 == dataInd) {
+      setShowResult(true)
     }
     else{
       setDataInd(dataInd + 1);
     }
   };
  
-  const result = (total) => {
-    if(setDataInd.length -1){
-      total = marks
-     }
-     else{
-       total = "Please Complete full quiz"
-     }
-  }
 
   const CheckAns = (correct , wrong) => {
     if(correct == wrong){
@@ -94,14 +89,15 @@ function App() {
     nextQues();
   };
 
-
+console.log(Result)
   return (
-    <div className="App">
+    <div>
       <ButtonAppBar/>
-      <Question ques={data[dataInd].question ? data[dataInd].question : nextQues()} />      
+      <Question ques={ showResult ?  Result : data[dataInd].question} />
+            
       <Box  sx={{ width: '95%' }}  className="pt-5 mt-4" >
       <Grid  className="p-5" container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 6 }} >
-      {data[dataInd].answers.map((item)=>{
+      { showResult ? none : data[dataInd].answers.map((item)=>{
         return(
           console.log(item),
           <Options click={() => CheckAns(data[dataInd].correctAns,item)} opt={item}/>
@@ -109,7 +105,9 @@ function App() {
       })}
     </Grid>
       </Box>
-      {/* <p>{total}</p> */}
+    
+        <p></p>
+      
     </div>
     
   );
